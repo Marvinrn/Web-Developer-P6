@@ -1,0 +1,45 @@
+//installation du package bcrypt pour hasher les mdp
+const bcrypt = require('bcrypt');
+
+const User = require('../models/user');
+
+
+exports.signup = (req, res, next) => {
+    bcrypt.hash(req.body.password, 10)
+        .then(hash => {
+            const user = new User({
+                email: req.body.email,
+                password: hash
+            });
+            user.save()
+                .then(() => res.status(201).json({ message: 'Utilisateur créé' }))
+                .catch(error => res.status(400).json({ error }));
+        })
+        .catch(error => res.status(500).json({ error }));
+};
+
+exports.login = (req, res, next) => {
+    //on récupère le user dans la base correspondant au mail entré
+    User.findOne({email: req.body.email})
+    .then(user =>{
+        //renvoie une erreur si le user n'est pas bon
+        if(!user){
+            return res.status(401).json({message: 'Utilisateur non trouvé'})
+        }
+        // si l'utilisateur est trouvé, on va comparer les mdp hashés
+        bcrypt.compare(req.body.password, user.password)
+        .then(valid => {
+            // si comparaison n'est pas bonne, on renvoi une erreur
+            if(!valid){
+                return res.status(401).json({message: 'Mot de passe invalide'})
+            }
+            // si comparaison est bonne, on renvoi son userId et un token d'authentification
+            res.status(200).json({
+                userId: user._id,
+                token: 'TOKEN'
+            });
+        })
+        .catch(error => res.status(500).json({error}));
+    })
+    .catch(error => res.status(500).json({error}));
+};
