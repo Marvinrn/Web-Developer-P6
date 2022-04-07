@@ -1,13 +1,17 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-const app = express();
+const saucesRoutes = require('./routes/sauces')
 
 mongoose.connect('mongodb+srv://test:projet6openclassrooms@cluster0.doid5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+
+
+const app = express();
+
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,8 +20,6 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use((req, res, next) =>{
-    res.json({message: 'Votre reqête a bien été reçue'})
-});
+app.use(saucesRoutes);
 
 module.exports = app;
