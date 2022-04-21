@@ -26,6 +26,7 @@ exports.login = (req, res, next) => {
         .then(user => {
             //renvoie une erreur si le user n'est pas bon
             if (!user) {
+                console.log(req.body.email);
                 return res.status(401).json({ message: 'Utilisateur non trouvé' })
             }
             // si l'utilisateur est trouvé, on va comparer les mdp hashés
@@ -33,6 +34,7 @@ exports.login = (req, res, next) => {
                 .then(valid => {
                     // si comparaison n'est pas bonne, on renvoi une erreur
                     if (!valid) {
+                        console.log(req.body);
                         return res.status(401).json({ message: 'Mot de passe invalide' })
                     }
                     // si comparaison est bonne, on renvoi son userId et un token d'authentification
