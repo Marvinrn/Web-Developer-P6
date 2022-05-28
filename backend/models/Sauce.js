@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+// creation de notre schema pour les sauces avec la fonction schema de mongoose
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
   name: { type: String, required: true },
@@ -8,8 +9,8 @@ const sauceSchema = mongoose.Schema({
   mainPepper: { type: String, required: true },
   imageUrl: { type: String, required: true },
   heat: { type: Number, required: true },
-  likes: { type: Number},
-  dislikes: { type: Number},
+  likes: { type: Number },
+  dislikes: { type: Number },
   usersLiked: { type: [String] },
   usersDisliked: { type: [String] },
 });

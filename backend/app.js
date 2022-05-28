@@ -1,4 +1,5 @@
 const express = require('express');
+// installation de mongoose pour faciliter les interactions avec la base de données
 const mongoose = require('mongoose');
 
 const path = require('path')
@@ -6,8 +7,10 @@ const path = require('path')
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
+require('dotenv').config();
 
-mongoose.connect('mongodb+srv://test:projet6openclassrooms@cluster0.doid5.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+
+mongoose.connect(process.env.MONGO_URL,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
