@@ -15,6 +15,7 @@ module.exports = (req, res, next) => {
             throw 'User ID non valable'
         } else {
             // on passe ensuite la requête si tout vas bien
+            res.locals.userId = userId
             next();
         }
     } catch (error) {
